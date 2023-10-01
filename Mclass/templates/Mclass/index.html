@@ -1,13 +1,21 @@
 {% extends "Mclass/layout.html" %}
 {% load static %}
 
+{% block title %}
+    Modern Class
+{% endblock %}
+
 {% block body %}
     {% if not user.is_authenticated %}
         <div class="flex items-center justify-center h-full">
             <div class="text-center">
-                <h1 class="text-6xl font-bold underline">Welcome To Modern Class</h1>
-                <p class="text-3xl">The best place to learn</p>
-                <div class="text-xl bg-green-500 text-white px-4 py-2 rounded-lg">Login/Register To Get Started!</div>
+                <div class="bg-gray-400 px-4 py-2 rounded-lg">
+                    <h1 class="text-purple-500 text-6xl font-bold underline">Welcome To Modern Class</h1>
+                    <br>
+                    <p class="text-4xl">The best place to learn</p>
+                    <br>
+                    <div class="text-6xl text-white ">Login/Register To Get Started!</div>
+                </div>
             </div>
         </div>
     {% endif %}

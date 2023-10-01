@@ -14,6 +14,8 @@ from .models import User
 # Create your views here.
 
 def register_view(request):
+    if request.user.is_authenticated:
+        error_404(request)
     if request.method == "POST":
         full_name = request.POST["full-name"]
         email = request.POST["email"]
@@ -49,12 +51,14 @@ def register_view(request):
 
 
 def login_view(request):
+    if request.user.is_authenticated:
+        error_404(request)
     if request.method == "POST":
 
         # Attempt to sign user in
         email = request.POST["email"]
         password = request.POST["password"]
-        user = authenticate(request, username=email, password=password)
+        user = authenticate(request, username=email.lower(), password=password)
 
         # Check if authentication successful
         if user is not None:
@@ -68,10 +72,28 @@ def login_view(request):
         return render(request, "Mclass/login.html")
 
 
+# logout the user
 def logout_view(request):
+    if not request.user.is_authenticated:
+        error_404(request)
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
 
+# the main view
 def index(request):
-    return render(request, 'Mclass/index.html')
+    return render(request, 'Mclass/404.html')
+
+
+# create a new class
+def create_view(request):
+    pass
+
+
+# show the user joined classes
+def myclasses_view(request):
+    pass
+
+
+def error_404(request):
+    return render(request, "Mclass/404.html")
