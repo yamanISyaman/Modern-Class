@@ -1,0 +1,59 @@
+{% extends "Mclass/layout.html" %}
+{% load static %}
+
+{% block navbar %}
+    <a href="{% url 'index' %}"><button class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded">Main Page</button></a>
+{% endblock %}
+
+{% block body %}
+     <!-- Create a container for the form -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- Create a card for the form -->
+        <div class="bg-white shadow-lg rounded-lg p-6">
+            <!-- Create a title for the form -->
+            <h1 class="text-2xl font-bold text-gray-800 mb-4">Register a new account</h1>
+            <!-- Create a form element -->
+            <form method="post" action="{% url 'register' %}">
+                {% csrf_token %}
+                {% if message %}
+                    <div class="flex items-center bg-red-500 text-white text-sm font-bold px-4 py-3" role="alert">
+                        <svg class="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 20a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm1-11h2v6h-2v-6zm0-4h2v2h-2V5z"/></svg>
+                        <p>{{ message }}</p>
+                    </div>
+                {% endif %}
+                <!-- Create a div for the full name field -->
+                <div class="mb-4">
+                    <label for="full-name" class="block text-gray-600 text-sm font-medium mb-2">Full name</label>
+                    <input required type="text" id="full-name" name="full-name" placeholder="Enter your full name" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-indigo-500">
+                </div>
+                <!-- Create a div for the email field -->
+                <div class="mb-4">
+                    <label for="email" class="block text-gray-600 text-sm font-medium mb-2">Email</label>
+                    <input required type="email" id="email" name="email" placeholder="Enter your email" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-indigo-500">
+                </div>
+                <!-- Create a div for the role field -->
+                <div class="mb-4">
+                    <label for="role" class="block text-gray-600 text-sm font-medium mb-2">You are a:</label>
+                    <!-- Create a select for the role field -->
+                    <select required id="role" name="role" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-indigo-500">
+                    <!-- Create options -->
+                        <option value="teacher">Teacher</option>
+                        <option value="student">Student</option>
+                    </select>
+                </div>
+                <!-- Create a div for the password field -->
+                <div class="mb-4">
+                    <label for="password" class="block text-gray-600 text-sm font-medium mb-2">Password</label>
+                    <input required type="password" id="password" name="password" placeholder="Enter your password" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-indigo-500">
+                </div>
+                <!-- Create a div for the confirm password field -->
+                <div class="mb-4">
+                    <label for="confirm-password" class="block text-gray-600 text-sm font-medium mb-2">Confirm password</label>
+                    <input required type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-indigo-500">
+                </div>
+                <!-- Create a button for submitting the form -->
+                <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-md hover:bg-indigo-700">Register</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
