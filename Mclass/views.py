@@ -13,7 +13,7 @@ from .models import User
 
 # Create your views here.
 
-def register(request):
+def register_view(request):
     if request.method == "POST":
         full_name = request.POST["full-name"]
         email = request.POST["email"]
@@ -49,7 +49,29 @@ def register(request):
 
 
 def login_view(request):
-    pass
+    if request.method == "POST":
+
+        # Attempt to sign user in
+        email = request.POST["email"]
+        password = request.POST["password"]
+        user = authenticate(request, username=email, password=password)
+
+        # Check if authentication successful
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect(reverse("index"))
+        else:
+            return render(request, "Mclass/login.html", {
+                "message": "Invalid email and/or password."
+            })
+    else:
+        return render(request, "Mclass/login.html")
+
+
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect(reverse("index"))
+
 
 def index(request):
     return render(request, 'Mclass/index.html')
