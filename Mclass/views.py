@@ -1,4 +1,5 @@
 import json
+from .utils import image_is_valid
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
@@ -9,7 +10,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 
-from .models import User
+from .models import User, Classroom
 
 # Create your views here.
 
@@ -82,12 +83,44 @@ def logout_view(request):
 
 # the main view
 def index(request):
-    return render(request, 'Mclass/404.html')
+    return render(request, 'Mclass/index.html')
 
 
 # create a new class
 def create_view(request):
-    pass
+    user = request.user
+    if not user.is_authenticated and not user.is_teacher:
+        error_404(request)
+
+    options = ["Chemistry", "Biology", "Physics", "Computer Science", "Art", "History", "Literature", "Languages", "Music", "Geography", "Other"]
+
+    if request.method == "POST":
+        data = request.POST
+        private = True
+        image = data["image"]
+        if data['visibility'] == "public":
+            private = False
+
+        if image != '':
+            if not image_is_valid(image):
+                return render(request, "Mclass/create.html", {
+                "message": "Invalid Image URL"
+            })
+        
+        classroom = Classroom(
+            title=data['title'],
+            image=data['image'],
+            category=data['category'],
+            private=private,
+            details=data['details'],
+            teacher=request.user
+        )
+        classroom.save()
+        return render(request, "Mclass/index.html")
+        
+    return render(request, "Mclass/create.html", {
+        "options": options
+    })
 
 
 # show the user joined classes

@@ -1,0 +1,68 @@
+{% extends "Mclass/layout.html" %}
+{% load static %}
+
+{% block title %}
+    Create Class
+{% endblock %}
+
+{% block body %}
+     <!-- Create a container for the form -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- Create a card for the form -->
+        <div class="bg-white shadow-lg rounded-lg p-6">
+            <!-- Create a title for the form -->
+            <h1 class="text-2xl font-bold text-gray-800 mb-4">Create a new class</h1>
+            <!-- Create a form element -->
+            <form method="post" action="{% url 'create' %}">
+                {% csrf_token %}
+                {% if message %}
+                    <div class="flex items-center bg-red-500 text-white text-sm font-bold px-4 py-3" role="alert">
+                        <svg class="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 20a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm1-11h2v6h-2v-6zm0-4h2v2h-2V5z"/></svg>
+                        <p>{{ message }}</p>
+                    </div>
+                {% endif %}
+                <!-- Create a div for the Title field -->
+                <div class="mb-4">
+                    <label for="title" class="block text-gray-600 text-sm font-medium mb-2">Title</label>
+                    <input required type="text" id="title" name="title" placeholder="Enter a Title for your class" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-indigo-500">
+                </div>
+                
+                <!-- Create a div for the image field -->
+                <div class="mb-4">
+                    <label for="image" class="block text-gray-600 text-sm font-medium mb-2">Image URL (optional)</label>
+                    <input type="text" id="image" name="image" placeholder="Paste a valid image URL for your class" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-indigo-500">
+                </div>
+                
+                <!-- Create a div for the visibility field -->
+                <div class="mb-4">
+                    <label for="visibility" class="block text-gray-600 text-sm font-medium mb-2">Visibility</label>
+                    <!-- Create a select for the visibility field -->
+                    <select id="visibility" name="visibility" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-indigo-500">
+                        <!-- Create options -->
+                        <option value="public">Public</option>
+                        <option value="private">Private</option>
+                    </select>
+                </div>
+                
+                <!-- Create div for Category -->
+                <div class="flex flex-col">
+                    <label for="category" class="block text-gray-600 text-sm font-medium mb-2">Category</label>
+                    <select id="category" name="category" class="border border-gray-300 rounded-lg p-2 appearance-none">
+                        {% for option in options %}
+                            <option value="{{ option }}">{{ option }}</option> 
+                        {% endfor %}
+                    </select>
+                </div>
+                <br>
+                <!-- Create a details input -->
+                <div class="flex flex-col">
+                    <label for="details" class="block text-gray-600 text-sm font-medium mb-2">Details</label>
+                    <textarea id="details" name="details" class="border border-gray-300 rounded-lg p-2 resize-none" rows="5" minlength="30" maxlength="400" required></textarea>
+                </div>
+                <br>
+                <!-- Create a button for submitting the form -->
+                <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-md hover:bg-indigo-700">Create</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
