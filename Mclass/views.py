@@ -83,6 +83,35 @@ def logout_view(request):
 
 # the main view
 def index(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        filter = data["filter"]
+        page = data["page"]
+        classes = None
+    
+        if filter == "all":
+            classes = Classroom.objects.all()
+        else:
+            if request.user.teacher:
+                classes = request.user.tclass.all()
+            else:
+                classes = request.user.sclass.all()
+        
+        classes_list = [c.serialize() for c in classes]
+        sorted_classes = sorted(classes_list, key=lambda _: _['id'], reverse=True)
+        
+        pg = Paginator(sorted_classes, 10)
+        try:
+            p = pg.page(page)
+        except EmptyPage:
+            error_404(request)
+            
+        return JsonResponse({
+            "has_next": p.has_next(),
+            "has_previous": p.has_previous(),
+            "num_pages": pg.num_pages,
+            "classes": p.object_list,
+        }, status=201)
     return render(request, 'Mclass/index.html')
 
 
@@ -92,13 +121,11 @@ def create_view(request):
     if not user.is_authenticated and not user.is_teacher:
         error_404(request)
 
-    options = ["Chemistry", "Biology", "Physics", "Computer Science", "Art", "History", "Literature", "Languages", "Music", "Geography", "Other"]
-
     if request.method == "POST":
         data = request.POST
         private = True
-        image = data["image"]
-        if data['visibility'] == "public":
+        image = data.get('image')
+        if data.get('visibility') == "public":
             private = False
 
         if image != '':
@@ -108,16 +135,18 @@ def create_view(request):
             })
         
         classroom = Classroom(
-            title=data['title'],
-            image=data['image'],
-            category=data['category'],
+            title=data.get('title'),
+            image=image,
+            category=data.get('category'),
             private=private,
-            details=data['details'],
+            details=data.get('details'),
             teacher=request.user
         )
         classroom.save()
-        return render(request, "Mclass/index.html")
-        
+        return HttpResponseRedirect(reverse("index"))
+
+    options = ["Chemistry", "Biology", "Physics", "Computer Science", "Art", "History", "Literature", "Languages", "Music", "Geography", "Other"]
+    
     return render(request, "Mclass/create.html", {
         "options": options
     })

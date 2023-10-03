@@ -20,3 +20,18 @@ class Classroom(models.Model):
     closed = models.BooleanField(default=False)
     teacher = models.ForeignKey(User, on_delete=models.CASCADE, related_name="tclass")
     student = models.ManyToManyField(User, related_name="sclass")
+
+    
+    def serialize(self):
+        return {
+            "id": self.id,
+            "teacher": self.teacher.full_name,
+            "title": self.title,
+            "image": self.image,
+            "date": self.date.strftime("%b %d %Y, %I:%M %p"),
+            "category": self.category,
+            "details": self.details,
+            "private": self.private,
+            "closed": self.closed,
+            "students": [*self.student.all()]
+        }
