@@ -41,16 +41,17 @@ function showClasses(filter, page=1) {
     .then(result => {
         // clean the container div
         document.querySelector('#classes-list').innerHTML = '';
+        // initial value holders
+        let ccolor = 'green';
+        let c = 'Available';
+        let vcolor = 'blue';
+        let v = 'Public';
         // loop and add the classes cards
         result.classes.forEach((r) => {
-            let vcolor = 'blue';
-            let v = 'Public';
             if (r.private) {
                 v = 'Private';
                 vcolor = 'gray'
             } else {}
-            let ccolor = 'green';
-            let c = 'Available';
             if (r.closed) {
                 c = 'Closed';
                 ccolor = 'red'
@@ -60,6 +61,7 @@ function showClasses(filter, page=1) {
                 image = r.image;
             } else {}
             document.querySelector('#classes-list').innerHTML += `
+            <a href="class/${r.title}+${r.id}">
                 <div class="flex justify-center mt-2">
                     <div class="p-4 border border-gray-300 shadow-lg rounded-lg">
                         <div class="mb-4 flex flex-col items-center">
@@ -77,8 +79,9 @@ function showClasses(filter, page=1) {
                         </div>
                     </div>
                 </div>
-                `;
-            })
+            </a>
+            `;
+        })
         
         // add paginator buttons
         let pg = `

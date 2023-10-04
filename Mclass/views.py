@@ -176,6 +176,11 @@ def create_view(request):
     return render(request, "Mclass/create.html", {
         "options": get_options()
     })
+
+
+# the class view
+def class_view(request, title, class_id):
+    return HttpResponse(f'{title}/{class_id}')
     
 
 
