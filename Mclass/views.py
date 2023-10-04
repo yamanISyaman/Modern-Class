@@ -112,9 +112,10 @@ def index(request):
             
             classes = Classroom.objects.filter(**kargs)
 
-        # show classes that contain the search keyword in their title or the details
+        # show classes that contain the search keyword in their title or the details or teacher name
         elif filter == "search":
-            pass
+            sw = data["search_word"]
+            classes = Classroom.objects.filter(title__contains=sw) | (Classroom.objects.filter(details__contains=sw)) | (Classroom.objects.filter(teacher__full_name__contains=sw))
 
         else:
             error_404()

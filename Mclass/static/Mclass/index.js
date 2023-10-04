@@ -7,14 +7,22 @@ document.addEventListener('DOMContentLoaded', function() {
 // a function for showing the classes
 function showClasses(filter, page=1) {
     const csrftoken = document.querySelector('#csrf').firstElementChild.value;
+    // filter variables
     let ctg = '';
     let tp = '';
     let av = '';
-    
+    // search word variable
+    let sw = '';
+
+    // edit filter variables
     if (filter === "filter") {
         ctg = document.querySelector("#category").value;
         tp = document.querySelector("#type").value;
         av = document.querySelector("#availability").value;
+    } 
+    // edit search word variable
+    else if (filter) {
+        sw = document.querySelector("#search").value;
     } else {}
     fetch('', {
         method: 'POST',
@@ -26,6 +34,7 @@ function showClasses(filter, page=1) {
             category: ctg,
             type: tp,
             availability: av,
+            search_word: sw,
         })
     })
     .then(response => response.json())
@@ -59,7 +68,7 @@ function showClasses(filter, page=1) {
                         </div>
                         <p class="max-w-md text-gray-700">${r.details}</p>
                         <div class="mt-4 flex items-center justify-between">
-                            <span class="text-sm font-semibold text-gray-600">Teacher: ${r.teacher}</span>
+                            <span class="text-sm font-semibold text-gray-600">Instructor: ${r.teacher}</span>
                             <span class="text-sm font-semibold text-gray-600">Category: ${r.category}</span>
                             <div class="flex">
                                 <span class="mr-2 px-2 py-1 border border-${ccolor}-500 bg-${ccolor}-100 text-xs font-bold text-${ccolor}-500 rounded-full">${c}</span>
