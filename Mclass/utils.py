@@ -10,3 +10,7 @@ def image_is_valid(image_url):
     if r.headers["content-type"] in image_formats:
         return True
     return False
+
+
+def get_options():
+    return ["Chemistry", "Biology", "Physics", "Computer Science", "Art", "History", "Literature", "Languages", "Music", "Geography", "Other"]

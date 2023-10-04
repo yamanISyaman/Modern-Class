@@ -5,8 +5,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 // a function for showing the classes
-function showClasses(filter, page) {
+function showClasses(filter, page=1) {
     const csrftoken = document.querySelector('#csrf').firstElementChild.value;
+    let ctg = '';
+    let tp = '';
+    let av = '';
+    
+    if (filter === "filter") {
+        ctg = document.querySelector("#category").value;
+        tp = document.querySelector("#type").value;
+        av = document.querySelector("#availability").value;
+    } else {}
     fetch('', {
         method: 'POST',
         headers: {'X-CSRFToken': csrftoken},
@@ -14,6 +23,9 @@ function showClasses(filter, page) {
         body: JSON.stringify({
             filter: filter,
             page: page,
+            category: ctg,
+            type: tp,
+            availability: av,
         })
     })
     .then(response => response.json())
@@ -61,7 +73,7 @@ function showClasses(filter, page) {
         
         // add paginator buttons
         let pg = `
-            <div class="flex justify-center">
+            <div class="flex justify-center mt-2">
                 <ul class="flex items-center">`;
         if (result.has_previous) {
             pg += `<li>
@@ -87,4 +99,48 @@ function showClasses(filter, page) {
         `;
         document.querySelector('#classes-list').innerHTML += pg;
     })
+}
+
+
+// show the filter form
+function showFilter() {
+    if (document.querySelector('#filter-nav').innerHTML != '') {
+        document.querySelector('#filter-nav').innerHTML = '';
+    } else {
+        fetch('filter', {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(result => {
+            console.log(result);
+            html = `
+            <div class="flex flex-col items-center bg-gray-100 p-4">
+                <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+                <select class="w-full md:w-40 border border-gray-300 rounded-md px-4 py-2" name="category" id="category">
+                <option value="" disabled selected>Category</option>
+            `;
+            result.options.forEach((o) => {
+                html += `
+                    <option value="${o}">${o}</option>
+                `;
+            })
+            html += `
+            </select>
+            <select class="w-full md:w-40 border border-gray-300 rounded-md px-4 py-2" name="type" id="type">
+                <option value="" disabled selected>Type</option>
+                <option value="private">Private</option>
+                <option value="public">Public</option>
+            </select>
+            <select class="w-full md:w-40 border border-gray-300 rounded-md px-4 py-2" name="availability" id="availability">
+                <option value="" disabled selected>Availability</option>
+                <option value="closed">Closed</option>
+                <option value="available">Available</option>
+            </select>
+            </div>
+            <button class="mt-4 bg-blue-500 text-white font-bold px-8 py-3 rounded-md" type="submit" onclick="showClasses('filter')">Filter</button>
+            </div>
+            `;
+            document.querySelector('#filter-nav').innerHTML = html;
+        })
+    }  
 }

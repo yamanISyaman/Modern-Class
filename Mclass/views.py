@@ -1,5 +1,5 @@
 import json
-from .utils import image_is_valid
+from .utils import *
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
@@ -88,24 +88,51 @@ def index(request):
         filter = data["filter"]
         page = data["page"]
         classes = None
-    
+
         if filter == "all":
             classes = Classroom.objects.all()
-        else:
-            if request.user.teacher:
+
+        # the student their enrolled classes and the teacher thier own classes
+        elif filter == "my":
+            if request.user.is_teacher:
                 classes = request.user.tclass.all()
             else:
                 classes = request.user.sclass.all()
-        
+
+        # show classes as the filter was set
+        elif filter == "filter":
+            kargs = dict()
+            if data["category"] != '':
+                
+                kargs["category"] = data["category"]
+            if data["type"] != '':
+                kargs["private"] = True if data["type"] == "private" else False
+            if data["availability"] != '':
+                kargs["closed"] = True if data["availability"] == "closed" else False
+            
+            classes = Classroom.objects.filter(**kargs)
+
+        # show classes that contain the search keyword in their title or the details
+        elif filter == "search":
+            pass
+
+        else:
+            error_404()
+
+        # make a list of dictionaries of classes
         classes_list = [c.serialize() for c in classes]
+
+        # sort depending on ids
         sorted_classes = sorted(classes_list, key=lambda _: _['id'], reverse=True)
-        
+
+        # make a paginator
         pg = Paginator(sorted_classes, 10)
         try:
             p = pg.page(page)
         except EmptyPage:
             error_404(request)
-            
+
+        #return a json response
         return JsonResponse({
             "has_next": p.has_next(),
             "has_previous": p.has_previous(),
@@ -144,18 +171,22 @@ def create_view(request):
         )
         classroom.save()
         return HttpResponseRedirect(reverse("index"))
-
-    options = ["Chemistry", "Biology", "Physics", "Computer Science", "Art", "History", "Literature", "Languages", "Music", "Geography", "Other"]
     
     return render(request, "Mclass/create.html", {
-        "options": options
+        "options": get_options()
     })
-
-
-# show the user joined classes
-def myclasses_view(request):
-    pass
+    
 
 
 def error_404(request):
     return render(request, "Mclass/404.html")
+
+
+# sending the available options to the filter on the frontend
+@csrf_exempt
+def show_filter(request):
+    if request.method == "POST":
+        return JsonResponse({
+            "options": get_options()
+        }, status=201)
+    error_404(request)
