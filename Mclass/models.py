@@ -33,5 +33,5 @@ class Classroom(models.Model):
             "details": self.details,
             "private": self.private,
             "closed": self.closed,
-            "students": [*self.student.all()]
+            "students": [*self.student.all()],
         }

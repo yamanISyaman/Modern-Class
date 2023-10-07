@@ -161,6 +161,8 @@ def create_view(request):
                 return render(request, "Mclass/create.html", {
                 "message": "Invalid Image URL"
             })
+        else:
+            image = "https://img.freepik.com/free-vector/hand-drawn-flat-design-stack-books-illustration_23-2149341898.jpg"
         
         classroom = Classroom(
             title=data.get('title'),
@@ -180,7 +182,11 @@ def create_view(request):
 
 # the class view
 def class_view(request, title, class_id):
-    return HttpResponse(f'{title}/{class_id}')
+    class_object = Classroom.objects.get(id=class_id)
+    return render(request, "Mclass/class.html", {
+        "data": class_object.serialize(),
+        "teacher": class_object.teacher
+    })
     
 
 
