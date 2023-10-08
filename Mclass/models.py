@@ -20,6 +20,7 @@ class Classroom(models.Model):
     closed = models.BooleanField(default=False)
     teacher = models.ForeignKey(User, on_delete=models.CASCADE, related_name="tclass")
     student = models.ManyToManyField(User, related_name="sclass")
+    request = models.ManyToManyField(User, related_name="request")
 
     
     def serialize(self):
@@ -33,5 +34,6 @@ class Classroom(models.Model):
             "details": self.details,
             "private": self.private,
             "closed": self.closed,
-            "students": [*self.student.all()],
+            "students": [s.id for s in self.student.all()],
+            "requests": [r.id for r in self.request.all()],
         }

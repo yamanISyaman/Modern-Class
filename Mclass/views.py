@@ -181,15 +181,31 @@ def create_view(request):
 
 
 # the class view
+@login_required
 def class_view(request, title, class_id):
     class_object = Classroom.objects.get(id=class_id)
+    # enroll students to a class
+    if request.method == "POST":
+        if not request.user.is_teacher:
+            if request.user not in class_object.student.all():
+                if class_object.private:
+                    if request.user not in class_object.request.all():
+                         class_object.request.add(request.user)
+                    else:
+                         class_object.request.remove(request.user)
+                else:
+                         class_object.student.add(request.user)
+            else:
+                class_object.student.remove(request.user)
+        else:
+            error_404(request)
     return render(request, "Mclass/class.html", {
         "data": class_object.serialize(),
         "teacher": class_object.teacher
     })
-    
 
 
+# show error page
 def error_404(request):
     return render(request, "Mclass/404.html")
 

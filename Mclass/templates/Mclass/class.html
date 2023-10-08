@@ -35,23 +35,37 @@
                     <span class="border border-green-500 bg-green-100 text-xs font-bold text-green-500 px-3 py-1 mr-2 mb-2 rounded-full">Available</span>
                 {% endif %}
             </div>
-            {% if user.is_authenticated and not user.is_teacher and not data.closed and user not in data.students %}
-                {% if data.private %}
-                    <button class="bg-blue-600 text-white px-4 py-2 mt-4 rounded-lg hover:bg-blue-700">Send Request</button>
-                {% else %}
-                    <button class="bg-green-600 text-white px-4 py-2 mt-4 rounded-lg hover:bg-green-700">Join Now</button>
-                {% endif %}
+            {% if user.is_authenticated and not user.is_teacher and not data.closed %}
+                <form method="post" action="{% url 'class_view' data.title data.id %}">
+                    <div id="csrf">{% csrf_token %}</div>
+                    {% if user.id not in data.students %}
+                
+                        {% if data.private %}
+                            {% if user.id not in data.requests %}
+                                <button type="submit" class="bg-blue-600 text-white px-4 py-2 mt-4 rounded-lg hover:bg-blue-700">Send Request</button>
+                            {% else %}
+                                <button type="submit" class="bg-gray-600 text-white px-4 py-2 mt-4 rounded-lg hover:bg-gray-700">Cancel Request</button>
+                            {% endif %}
+                        {% else %}
+                        <button type="submit" class="bg-green-600 text-white px-4 py-2 mt-4 rounded-lg hover:bg-green-700">Enroll</button>
+                        {% endif %}
+                    {% else %}
+                        <button type="submit" class="bg-red-600 text-white px-4 py-2 mt-4 rounded-lg hover:bg-red-700">Leave Class</button>
+                    {% endif %}
+                </form>
             {% endif %}
         </div>
     </div>
     {% if user.is_authenticated %}
-        <div class="flex flex-row justify-center p-4">
-            <a class="text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent hover:border-blue-600">Content</a>
-            <a class="text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent hover:border-blue-600">Send Message</a>
-            {% if user == teacher %}
-                <a class="text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent hover:border-blue-600">Students List</a>
-                <a class="text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent hover:border-blue-600">Settings</a>
-            {% endif %}
-        </div>
+        {% if user.id in data.students or user == teacher %}
+            <div class="flex flex-row justify-center p-4">
+                <a class="text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent hover:border-blue-600">Content</a>
+                <a class="text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent hover:border-blue-600">Send Message</a>
+                {% if user == teacher %}
+                    <a class="text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent hover:border-blue-600">Students List</a>
+                    <a class="text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent hover:border-blue-600">Settings</a>
+                {% endif %}
+            </div>
+        {% endif %}
     {% endif %}
 {% endblock %}￼
