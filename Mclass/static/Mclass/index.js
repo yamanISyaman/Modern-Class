@@ -124,7 +124,6 @@ function showFilter() {
         })
         .then(response => response.json())
         .then(result => {
-            console.log(result);
             html = `
             <div class="flex flex-col items-center bg-gray-100 p-4">
                 <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">

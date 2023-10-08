@@ -9,10 +9,6 @@
     <script src="{% static 'Mclass/class.js' %}"></script>
 {% endblock %}
 
-{% block navbar %}
-    <a href="{% url 'index' %}"><button class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded">Main Page</button></a>
-{% endblock %}
-
 {% block body %}
     <div class="flex flex-col md:flex-row p-4">
         <div class="w-full md:w-1/2">
@@ -37,7 +33,7 @@
             </div>
             {% if user.is_authenticated and not user.is_teacher and not data.closed %}
                 <form method="post" action="{% url 'class_view' data.title data.id %}">
-                    <div id="csrf">{% csrf_token %}</div>
+                    {% csrf_token %}
                     {% if user.id not in data.students %}
                 
                         {% if data.private %}
@@ -58,14 +54,16 @@
     </div>
     {% if user.is_authenticated %}
         {% if user.id in data.students or user == teacher %}
-            <div class="flex flex-row justify-center p-4">
+            <div id="csrf">{% csrf_token %}</div>
+            <div class="flex flex-row flex-wrap justify-center p-4">
                 <a class="text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent hover:border-blue-600">Content</a>
                 <a class="text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent hover:border-blue-600">Send Message</a>
                 {% if user == teacher %}
-                    <a class="text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent hover:border-blue-600">Students List</a>
+                    <a class="text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent hover:border-blue-600" onclick="showStudents({{ data.id }})">Students</a>
                     <a class="text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent hover:border-blue-600">Settings</a>
                 {% endif %}
             </div>
         {% endif %}
     {% endif %}
+    <div id="inner-page" class="mb-5"></div>
 {% endblock %}￼

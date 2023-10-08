@@ -181,12 +181,12 @@ def create_view(request):
 
 
 # the class view
-@login_required
+
 def class_view(request, title, class_id):
     class_object = Classroom.objects.get(id=class_id)
     # enroll students to a class
     if request.method == "POST":
-        if not request.user.is_teacher:
+        if request.user.is_authenticated and not request.user.is_teacher:
             if request.user not in class_object.student.all():
                 if class_object.private:
                     if request.user not in class_object.request.all():
@@ -203,6 +203,39 @@ def class_view(request, title, class_id):
         "data": class_object.serialize(),
         "teacher": class_object.teacher
     })
+
+
+# show student class
+def students_view(request):
+    if request.method == "POST":
+        if not request.user.is_authenticated or not request.user.is_teacher:
+        	error_404(request)
+
+        data = json.loads(request.body)
+        classroom = Classroom.objects.get(id=data["id"])
+    
+        if classroom.teacher != request.user:
+            error_404(request)
+            
+        return JsonResponse({
+                "students": [{"name":s.full_name, "id":s.id} for s in classroom.student.all()]
+            }, status=201)
+    error_404(request)
+
+
+# removing a student from a class
+@login_required
+def kick_student(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        classroom = Classroom.objects.get(id=data["class_id"])
+        if request.user != classroom.teacher:
+            error_404(request)
+        student = User.objects.get(id=data["student_id"])
+        classroom.student.remove(student)
+        return JsonResponse({
+            }, status=201)
+    error_404(request)
 
 
 # show error page
