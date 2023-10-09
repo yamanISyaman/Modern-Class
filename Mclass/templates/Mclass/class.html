@@ -59,7 +59,10 @@
                 <a class="text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent hover:border-blue-600">Content</a>
                 <a class="text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent hover:border-blue-600">Send Message</a>
                 {% if user == teacher %}
-                    <a class="text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent hover:border-blue-600" onclick="showStudents({{ data.id }})">Students</a>
+                    <a class="text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent hover:border-blue-600" onclick="listStudents({{ data.id }}, type='s')">Students</a>
+                    {% if data.private %}
+                        <a class="text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent hover:border-blue-600" onclick="listStudents({{ data.id }}, type='r')">Requests</a>
+                    {% endif %}
                     <a class="text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent hover:border-blue-600">Settings</a>
                 {% endif %}
             </div>
