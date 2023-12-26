@@ -221,6 +221,7 @@ def class_view(request, class_id, title=""):
                     class_object.student.add(request.user)
             else:
                 class_object.student.remove(request.user)
+            return redirect(request.path)
         else:
             return error_404(request)
     return render(

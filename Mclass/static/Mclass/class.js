@@ -11,10 +11,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     // Get the element with the id content-btn
     let contentBtn = document.getElementById("content-btn");
+    
 
     // Simulate a click on the element
-    contentBtn.click();
-
+    if (contentBtn) {
+        contentBtn.click();
+    }
 });
 
 // list all the students or requests in a classroom
@@ -115,10 +117,17 @@ function toggleBorderBlue(element) {
         var settings_form = document.getElementById('settings_form');
         var content_form = document.getElementById('content_form');
 
-        settings_form.style.display = 'none';
-        content_form.style.display = 'none';
+        if (settings_form) {
+            settings_form.style.display = 'none';
+        }
+        if (content_form) {
+            content_form.style.display = 'none';
+        }
+        
         let content_div = document.querySelector('#contentlist');
         content_div.innerHTML = '';
+        let innerPage = document.getElementById("inner-page");
+        innerPage.innerHTML = '';
 
         if (element.id === "settings") {
             // Change its display to block
