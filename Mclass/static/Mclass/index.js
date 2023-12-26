@@ -81,32 +81,34 @@ function showClasses(filter, page=1) {
         })
         
         // add paginator buttons
-        let pg = `
-            <div class="flex justify-center mt-2">
-                <ul class="flex items-center">`;
-        if (result.has_previous) {
+        if (page > 1) {
+            let pg = `
+                <div class="flex justify-center mt-2">
+                    <ul class="flex items-center">`;
+            if (result.has_previous) {
+                pg += `<li>
+                        <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-l shadow-lg transform transition duration-300 ease-in-out hover:scale-105" onclick="showClasses('${filter}', ${page - 1})">
+                            Prev
+                        </button>
+                    </li>`;
+            } else {}
             pg += `<li>
-                    <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-l shadow-lg transform transition duration-300 ease-in-out hover:scale-105" onclick="showClasses('${filter}', ${page - 1})">
-                        Prev
-                    </button>
-                </li>`;
-        } else {}
-        pg += `<li>
-                    <span class="bg-white text-blue-500 font-bold py-2 px-4 border border-blue-500 shadow-lg">
-                        Page <span id="current-page">${page}</span> of <span id="total-pages">${result.num_pages}</span>
-                    </span>
-                </li>`;
-        if (result.has_next) {
-            pg += `<li>
-                    <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r shadow-lg transform transition duration-300 ease-in-out hover:scale-105" onclick="showClasses('${filter}', ${page + 1})">
-                        Next
-                    </button>
-                </li>`;
-        } else {}
-        pg += `</ul>
-        </div>
-        `;
-        document.querySelector('#classes-list').innerHTML += pg;
+                        <span class="bg-white text-blue-500 font-bold py-2 px-4 border border-blue-500 shadow-lg">
+                            Page <span id="current-page">${page}</span> of <span id="total-pages">${result.num_pages}</span>
+                        </span>
+                    </li>`;
+            if (result.has_next) {
+                pg += `<li>
+                        <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r shadow-lg transform transition duration-300 ease-in-out hover:scale-105" onclick="showClasses('${filter}', ${page + 1})">
+                            Next
+                        </button>
+                    </li>`;
+            } else {}
+            pg += `</ul>
+            </div>
+            `;
+            document.querySelector('#classes-list').innerHTML += pg;
+        }
     })
 }
 

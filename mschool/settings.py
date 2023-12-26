@@ -26,9 +26,14 @@ SECRET_KEY = 'django-insecure-ta-33k4+sp8z3h)t$drtn9aw%(v6yy_!6e*^tc9_z-%n#g9@bq
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'capstone--justatestcode.repl.co'
+    'capstone--justatestcode.repl.co',
+    '8000-sarcasticadmi-emptyrepo-rren46zm2gl.ws-us107.gitpod.io'
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://capstone--justatestcode.repl.co',
+    'https://8000-sarcasticadmi-emptyrepo-rren46zm2gl.ws-us107.gitpod.io'
+]
 
 # Application definition
 
@@ -40,9 +45,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -51,6 +58,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# IPs for DjDT
+INTERNAL_IPS = ["127.0.0.1"]
 
 ROOT_URLCONF = 'mschool.urls'
 
