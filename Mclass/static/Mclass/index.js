@@ -56,10 +56,7 @@ function showClasses(filter, page=1) {
                 c = 'Closed';
                 ccolor = 'red'
             } else {}
-            let image = 'https://img.freepik.com/free-vector/hand-drawn-flat-design-stack-books-illustration_23-2149341898.jpg';
-            if (r.image != '') {
-                image = r.image;
-            } else {}
+            let image = r.image;
             document.querySelector('#classes-list').innerHTML += `
             <a href="class/${r.title}+${r.id}">
                 <div class="flex justify-center mt-2">

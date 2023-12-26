@@ -7,6 +7,9 @@ from django.db import models
 class User(AbstractUser):
     full_name = models.CharField(max_length=50)
     is_teacher = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return self.username
 
 
 # Class Model
@@ -14,14 +17,16 @@ class Classroom(models.Model):
     title = models.CharField(max_length=100)
     details = models.CharField(max_length=400)
     date = models.DateTimeField(auto_now_add=True)
-    image = models.URLField(blank=True, default='')
+    image = models.URLField(blank=True, null=True, default='https://img.freepik.com/free-vector/hand-drawn-flat-design-stack-books-illustration_23-2149341898.jpg')
     private = models.BooleanField(default=False)
     category = models.CharField(max_length=30)
     closed = models.BooleanField(default=False)
     teacher = models.ForeignKey(User, on_delete=models.CASCADE, related_name="tclass")
-    student = models.ManyToManyField(User, related_name="sclass")
-    request = models.ManyToManyField(User, related_name="request")
+    student = models.ManyToManyField(User, related_name="sclass", blank=True)
+    request = models.ManyToManyField(User, related_name="request", blank=True)
 
+    def __str__(self):
+        return self.title
     
     def serialize(self):
         return {
@@ -37,3 +42,15 @@ class Classroom(models.Model):
             "students": [s.id for s in self.student.all()],
             "requests": [r.id for r in self.request.all()],
         }
+
+
+# Class Content Model
+class Content(models.Model):
+
+    name = models.CharField(max_length=100)
+    type = models.CharField(max_length=20)
+    url = models.URLField()
+    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, related_name="content")
+
+    def __str__(self):
+        return self.name

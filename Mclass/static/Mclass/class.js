@@ -1,4 +1,21 @@
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all the elements with the class class-btn
+    let buttons = document.querySelectorAll(".class-btn");
 
+    // Loop through the buttons and add a click event listener to each one
+    for (let button of buttons) {
+      button.addEventListener("click", function() {
+        // Call the toggleBorderBlue function with the clicked button as the argument
+        toggleBorderBlue(this);
+      });
+    }
+    // Get the element with the id content-btn
+    let contentBtn = document.getElementById("content-btn");
+
+    // Simulate a click on the element
+    contentBtn.click();
+
+});
 
 // list all the students or requests in a classroom
 function listStudents(id, type) {
@@ -82,20 +99,31 @@ function kickStudent(class_id, student_id) {
 
 
 // accept or reject a request
-function editRequest(class_id, student_id, type) {
-    const csrftoken = document.querySelector('#csrf').firstElementChild.value;
-    fetch('editrequest', {
-        method: 'POST',
-        headers: {'X-CSRFToken': csrftoken},
-        mode: 'same-origin', // Do not send CSRF token to another domain.
-        body: JSON.stringify({
-            student_id: student_id,
-            class_id: class_id,
-            type: type
-        })
-    })
-    .then(response => response.json())
-    .then(result => {
-        listStudents(class_id, type="r");
-    })
+function editRequest(class_id, student_id, type) {}
+
+
+
+// Define a function that takes an element as a parameter
+function toggleBorderBlue(element) {
+    // Check if the element doesn't have the class class-btn
+    if (!element.classList.contains("border-blue-600")) {
+
+        // Remove the blue border from other btns
+        let buttons = document.querySelectorAll(".class-btn.border-blue-600");
+        for (let button of buttons) {
+            button.classList.remove("border-blue-600");
+        }
+        // add the class border-blue-600 to the element
+        element.classList.add("border-blue-600");
+
+        // Get the element by id
+        var settings_form = document.getElementById ('settings_form');
+        if (element.id === "settings") {
+            // Change its display to block
+            settings_form.style.display = 'block';
+        } else {
+            // Change its display to none
+            settings_form.style.display = 'none';
+        }
+    }
 }

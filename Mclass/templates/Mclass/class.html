@@ -56,17 +56,104 @@
         {% if user.id in data.students or user == teacher %}
             <div id="csrf">{% csrf_token %}</div>
             <div class="flex flex-row flex-wrap justify-center p-4">
-                <a class="text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent hover:border-blue-600">Content</a>
-                <a class="text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent hover:border-blue-600">Send Message</a>
+                <a id="content-btn" class="class-btn text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent">Content</a>
+                <a class="class-btn text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent">Send Message</a>
                 {% if user == teacher %}
-                    <a class="text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent hover:border-blue-600" onclick="listStudents({{ data.id }}, type='s')">Students</a>
+                    <a class="class-btn text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent" onclick="listStudents({{ data.id }}, type='s')">Students</a>
                     {% if data.private %}
-                        <a class="text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent hover:border-blue-600" onclick="listStudents({{ data.id }}, type='r')">Requests</a>
+                        <a class="class-btn text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent" onclick="listStudents({{ data.id }}, type='r')">Requests</a>
                     {% endif %}
-                    <a class="text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent hover:border-blue-600">Settings</a>
+                    <a id="settings" class="class-btn text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent">Settings</a>
                 {% endif %}
             </div>
         {% endif %}
     {% endif %}
-    <div id="inner-page" class="mb-5"></div>
+    <div>
+        <div id="inner-page" class="mb-5"></div>
+        {% if user == teacher %}
+        <div id="settings_form" class="container mx-auto px-4 py-8">
+            <!-- Create a card for the form -->
+            <div class="bg-white shadow-lg rounded-lg p-6">
+                <!-- Create a title for the form -->
+                <h1 class="text-2xl font-bold text-gray-800 mb-4">Create a new class</h1>
+                <!-- Create a form element -->
+                <form method="post" action="{% url 'settings' data.id %}">
+                    {% csrf_token %}
+
+                    <!-- Create a div for the visibility field -->
+                    <div class="mb-4">
+                        <label for="visibility" class="block text-gray-600 text-sm font-medium mb-2">Visibility</label>
+                        <!-- Create a select for the visibility field -->
+                        <select id="visibility" name="visibility" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-indigo-500">
+                            <!-- Create options -->
+                            <option value="public">Public</option>
+                            <option value="private">Private</option>
+                        </select>
+                    </div>
+
+                    <!-- Create a div for the availability field -->
+                    <div class="mb-4">
+                        <label for="visibility" class="block text-gray-600 text-sm font-medium mb-2">Availability</label>
+                        <!-- Create a select for the availability field -->
+                        <select id="availability" name="availability" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-indigo-500">
+                            <!-- Create options -->
+                            <option value="available">Available</option>
+                            <option value="closed">Closed</option>
+                        </select>
+                    </div>
+
+                    <!-- Create div for Category -->
+                    <div class="flex flex-col">
+                        <label for="category" class="block text-gray-600 text-sm font-medium mb-2">Category</label>
+                        <select id="category" name="category" class="border border-gray-300 rounded-lg p-2 appearance-none">
+                            {% for option in options %}
+                                <option value="{{ option }}">{{ option }}</option> 
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <br>
+                    <!-- Create a button for submitting the form -->
+                    <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-md hover:bg-indigo-700">Save Changes</button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+        {% if user.id in data.students or user == teacher %}
+        <div id="content">
+            {% if user == teacher %}
+            <div class="container mx-auto p-10">
+                <!-- Collapse component -->
+                <details class="bg-gray-300 open:bg-amber-200 duration-300">
+                  <summary class="bg-inherit px-5 py-3 text-lg cursor-pointer">Add New Content</summary>
+                  <div class="bg-white px-5 py-3 border border-gray-300">
+                    <!-- Form component -->
+                    <form method="post" action="{% url 'content' data.id %}">
+                        {% csrf_token %}
+
+                    <!-- Create a div for contnent name field -->
+                        <div class="relative z-0 w-full mb-5">
+                            <input type="text" name="cn" placeholder=" " class="pt-3 pb-2 block w-full px-0 mt-0 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 focus:border-indigo-600 border-gray-200 font-sans" />
+                            <label for="cn" class="absolute duration-200 top-3 -z-1 origin-0 text-gray-500 text-base">Content Name</label>
+                        </div>
+
+                        <!-- Create a div for the availability field -->
+                        <div class="relative z-0 w-full mb-5">
+                            <input type="text" name="ct" placeholder=" " class="pt-3 pb-2 block w-full px-0 mt-0 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 focus:border-indigo-600 border-gray-200 font-sans" />
+                            <label for="ct" class="absolute duration-200 top-3 -z-1 origin-0 text-gray-500 text-base">Content Type</label>
+                        </div>
+                        <div class="relative z-0 w-full mb-5">
+                            <input type="text" name="cu" placeholder=" " class="pt-3 pb-2 block w-full px-0 mt-0 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 focus:border-indigo-600 border-gray-200 font-sans" />
+                            <label for="cu" class="absolute duration-200 top-3 -z-1 origin-0 text-gray-500 text-base">Content URL</label>
+                        </div>
+                        <!-- Create a button for submitting the form -->
+                        <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-md hover:bg-indigo-700">Add Content</button>
+                    </form>
+                </div>
+                </details>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
 {% endblock %}￼

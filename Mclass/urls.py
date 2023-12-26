@@ -12,5 +12,7 @@ urlpatterns = [
     path('class/requests', views.list_students, {"type": "r"}, name="requests"),
     path('class/kick', views.kick_student, name="kick"),
     path('class/editrequest', views.edit_request, name="editrequest"),
+    path('class/settings_<int:id>', views.class_settings, name="settings"),
+    path('class/content_<int:id>', views.add_content, name="content"),
     path('class/<str:title>+<int:class_id>', views.class_view, name="class_view"),
 ]
