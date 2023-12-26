@@ -117,13 +117,17 @@ function toggleBorderBlue(element) {
         element.classList.add("border-blue-600");
 
         // Get the element by id
-        var settings_form = document.getElementById ('settings_form');
+        var settings_form = document.getElementById('settings_form');
+        var content_form = document.getElementById('content_form');
+
+        settings_form.style.display = 'none';
+        content_form.style.display = 'none';
+
         if (element.id === "settings") {
             // Change its display to block
             settings_form.style.display = 'block';
-        } else {
-            // Change its display to none
-            settings_form.style.display = 'none';
+        } else if (element.id === "content-btn") {
+            content_form.style.display = 'block';
         }
     }
 }

@@ -300,23 +300,26 @@ def show_filter(request):
     return error_404(request)
 
 
+@login_required
 def add_content(request, id):
     # Get the classroom object by id
     classroom = Classroom.objects.get(id=id)
 
     if request.method == 'POST':
-        # Get the form data from the request
-        name = request.POST.get('name')
-        type = request.POST.get('type')
-        url = request.POST.get('url')
+        if request.user.is_teacher:
+            # Get the form data from the request
+            name = request.POST.get('cn')
+            type = request.POST.get('ct')
+            url = request.POST.get('cu')
 
-        # Create a new content object with the form data and the classroom
-        content = Content(name=name, type=type, url=url, classroom=classroom)
-        # Save the content object to the database
-        content.save()
+            # Create a new content object with the form data and the classroom
+            content = Content(name=name, type=type, url=url, classroom=classroom)
+            # Save the content object to the database
+            print(request.POST)
+            content.save()
 
-        # Redirect the user to the index view
-        return redirect('index')
+            # Redirect the user to the index view
+            return redirect('index')
 
     # If the request method is not POST return 404
     else:
