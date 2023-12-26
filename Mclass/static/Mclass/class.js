@@ -117,6 +117,8 @@ function toggleBorderBlue(element) {
 
         settings_form.style.display = 'none';
         content_form.style.display = 'none';
+        let content_div = document.querySelector('#contentlist');
+        content_div.innerHTML = '';
 
         if (element.id === "settings") {
             // Change its display to block
@@ -129,7 +131,7 @@ function toggleBorderBlue(element) {
 
 
 // show content
-// a function for showing the classes
+// a function for showing the content cards
 function showContent(class_id, page=1) {
     const csrftoken = document.querySelector('#csrf').firstElementChild.value;
     
