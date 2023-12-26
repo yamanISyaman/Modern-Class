@@ -98,11 +98,6 @@ function kickStudent(class_id, student_id) {
 }
 
 
-// accept or reject a request
-function editRequest(class_id, student_id, type) {}
-
-
-
 // Define a function that takes an element as a parameter
 function toggleBorderBlue(element) {
     // Check if the element doesn't have the class class-btn
@@ -131,3 +126,113 @@ function toggleBorderBlue(element) {
         }
     }
 }
+
+
+// show content
+// a function for showing the classes
+function showContent(class_id, page=1) {
+    const csrftoken = document.querySelector('#csrf').firstElementChild.value;
+    
+    fetch('content', {
+        method: 'POST',
+        headers: {'X-CSRFToken': csrftoken},
+        mode: 'same-origin', // Do not send CSRF token to another domain.
+        body: JSON.stringify({
+            page: page,
+            class_id: class_id,
+        })
+    })
+    .then(response => response.json())
+    .then(result => {
+        // clean the container div
+        let content_div = document.querySelector('#contentlist');
+        content_div.innerHTML = '';
+        // loop and add the classes cards
+        result.content.forEach((r) => {
+            let content_card = createCard(name=r.name, type=r.type, url=r.url);
+            content_div.appendChild(content_card);
+        })
+        
+        // add paginator buttons
+        if (page > 1) {
+            let pg = `
+                <div class="flex justify-center mt-2">
+                    <ul class="flex items-center">`;
+            if (result.has_previous) {
+                pg += `<li>
+                        <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-l shadow-lg transform transition duration-300 ease-in-out hover:scale-105" onclick="showClasses('${filter}', ${page - 1})">
+                            Prev
+                        </button>
+                    </li>`;
+            } else {}
+            pg += `<li>
+                        <span class="bg-white text-blue-500 font-bold py-2 px-4 border border-blue-500 shadow-lg">
+                            Page <span id="current-page">${page}</span> of <span id="total-pages">${result.num_pages}</span>
+                        </span>
+                    </li>`;
+            if (result.has_next) {
+                pg += `<li>
+                        <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r shadow-lg transform transition duration-300 ease-in-out hover:scale-105" onclick="showClasses('${filter}', ${page + 1})">
+                            Next
+                        </button>
+                    </li>`;
+            } else {}
+            pg += `</ul>
+            </div>
+            `;
+            document.querySelector('#contentlist').innerHTML += pg;
+        }
+    })
+}
+
+
+// Define a function that takes name and type as parameters
+function createCard(name, type, url) {
+    // Create a div element for the card container
+    let card = document.createElement("div");
+    card.className = "mt-4 bg-white mx-auto max-w-sm shadow-lg rounded-lg overflow-hidden";
+  
+    // Create a div element for the card content
+    let content = document.createElement("div");
+    content.className = "sm:flex sm:items-center px-6 py-4";
+  
+    // Create a div element for the card text
+    let text = document.createElement("div");
+    text.className = "text-center sm:text-left sm:flex-grow";
+  
+    // Create a p element for the name
+    let nameP = document.createElement("p");
+    nameP.className = "text-xl leading-tight";
+    nameP.textContent = name;
+  
+    // Create a p element for the type
+    let typeP = document.createElement("p");
+    typeP.className = "text-xs font-semibold rounded-full px-4 py-1 leading-normal bg-blue-700 border border-blue focus:outline-none text-white text-sm font-semibold text-center";
+    typeP.style.marginTop = "20px";
+    typeP.textContent = type;
+  
+    // Create a div element for the button
+    let buttonDiv = document.createElement("div");
+    buttonDiv.className = "flex justify-center items-center";
+  
+    // Create a a element for the button link
+    let buttonA = document.createElement("a");
+    buttonA.href = url;
+  
+    // Create a button element for the button
+    let button = document.createElement("button");
+    button.className = "text-xs font-semibold rounded-full px-4 py-1 leading-normal bg-green-700 border border-green focus:outline-none text-white text-sm font-semibold hover:bg-green-500";
+    button.textContent = "Open";
+  
+    // Append the elements to their parents
+    buttonA.appendChild(button);
+    buttonDiv.appendChild(buttonA);
+    text.appendChild(nameP);
+    text.appendChild(typeP);
+    text.appendChild(buttonDiv);
+    content.appendChild(text);
+    card.appendChild(content);
+  
+    // Return the card element
+    return card;
+  }

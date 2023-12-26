@@ -324,3 +324,40 @@ def add_content(request, id):
     # If the request method is not POST return 404
     else:
         return error_404(request)
+
+
+# the contents lister
+@login_required
+def show_content(request):
+    if request.method == "POST" and request.user.is_authenticated:
+        data = json.loads(request.body)
+        class_id = data["class_id"]
+        page = data["page"]
+
+        content = Content.objects.all()
+
+        # make a list of dictionaries of classes
+        content_list = [c.serialize() for c in content]
+
+        # sort depending on ids
+        sorted_content = sorted(content_list,
+            key=lambda _: _['id'],
+            reverse=True)
+
+        # make a paginator
+        pg = Paginator(sorted_content, 10)
+        try:
+            p = pg.page(page)
+        except EmptyPage:
+            return error_404(request)
+
+        #return a json response
+        return JsonResponse(
+            {
+                "has_next": p.has_next(),
+                "has_previous": p.has_previous(),
+                "num_pages": pg.num_pages,
+                "content": p.object_list,
+            },
+            status=201)
+    return error_404(request)

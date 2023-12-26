@@ -56,7 +56,7 @@
         {% if user.id in data.students or user == teacher %}
             <div id="csrf">{% csrf_token %}</div>
             <div class="flex flex-row flex-wrap justify-center p-4">
-                <a id="content-btn" class="class-btn text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent">Content</a>
+                <a id="content-btn" class="class-btn text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent" onclick="showContent({{ data.id }})">Content</a>
                 <a class="class-btn text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent">Send Message</a>
                 {% if user == teacher %}
                     <a class="class-btn text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent" onclick="listStudents({{ data.id }}, type='s')">Students</a>
@@ -154,6 +154,7 @@
             </div>
             {% endif %}
         </div>
+        <div id="contentlist"></div>
         {% endif %}
     </div>
 {% endblock %}￼

@@ -54,3 +54,12 @@ class Content(models.Model):
 
     def __str__(self):
         return self.name
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "type": self.type,
+            "url": self.url,
+            "classroom": self.classroom.id
+        }
