@@ -316,7 +316,6 @@ def add_content(request, id):
             # Create a new content object with the form data and the classroom
             content = Content(name=name, type=type, url=url, classroom=classroom)
             # Save the content object to the database
-            print(request.POST)
             content.save()
 
             # Redirect the user to the index view
@@ -335,7 +334,7 @@ def show_content(request):
         class_id = data["class_id"]
         page = data["page"]
 
-        content = Content.objects.all()
+        content = Content.objects.filter(classroom_id=class_id)
 
         # make a list of dictionaries of classes
         content_list = [c.serialize() for c in content]

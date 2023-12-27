@@ -19,7 +19,7 @@
         <nav class="flex flex-col md:flex-row items-center justify-between p-4 bg-gray-800">
             <div class="flex items-center mb-4 md:mb-0">
                 <!-- Adding the Logo -->
-                <img src="https://img.freepik.com/free-vector/bird-colorful-gradient-design-vector_343694-2506.jpg" alt="Logo" class="w-12 h-12 mr-2">
+                <img src="{% static 'Mclass/logo.jpg' %}" alt="Logo" class="w-12 h-12 mr-2">
                 <span class="text-white text-xl font-bold">Modern Class</span>
             </div>
             <!-- Wrapping the navigation links in a div -->
@@ -43,7 +43,7 @@
                 {% endblock %}
             </div>
         </nav>
-        <div class="body">
+        <div class="body" style="margin-bottom: 60vh;">
             <!-- create body block -->
             {% block body %}
             {% endblock %}

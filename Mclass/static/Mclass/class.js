@@ -232,7 +232,7 @@ function createCard(name, type, url) {
   
     // Create a button element for the button
     let button = document.createElement("button");
-    button.className = "text-xs font-semibold rounded-full px-4 py-1 leading-normal bg-green-700 border border-green focus:outline-none text-white text-sm font-semibold hover:bg-green-500";
+    button.className = "text-xs font-semibold rounded-full px-4 py-1 leading-normal bg-green-700 border border-green focus:outline-none text-white text-sm font-semibold hover:bg-green-500 mt-2";
     button.textContent = "Open";
   
     // Append the elements to their parents
