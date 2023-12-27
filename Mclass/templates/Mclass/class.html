@@ -12,7 +12,7 @@
 {% block body %}
     <div class="flex flex-col md:flex-row p-4">
         <div class="w-full md:w-1/2">
-        <img src="{{ data.image }}" alt="Course Image" class="w-full h-auto rounded-lg shadow-lg">
+        <img src="{{ data.image }}" alt="Course Image" class="md:w-1/2 sm:w-full mb-4 h-auto rounded-lg shadow-lg">
         </div>
         <div class="w-full md:w-1/2 pl-4">
             <h1 class="text-3xl font-bold text-gray-800">{{ data.title }}</h1>
@@ -57,7 +57,6 @@
             <div id="csrf">{% csrf_token %}</div>
             <div class="flex flex-row flex-wrap justify-center p-4">
                 <a id="content-btn" class="class-btn text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent" onclick="showContent({{ data.id }})">Content</a>
-                <a class="class-btn text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent">Send Message</a>
                 {% if user == teacher %}
                     <a class="class-btn text-blue-500 px-4 py-2 mr-2 border-b-4 border-transparent" onclick="listStudents({{ data.id }}, type='s')">Students</a>
                     {% if data.private %}
@@ -122,7 +121,7 @@
         {% if user.id in data.students or user == teacher %}
         <div id="content_form">
             {% if user == teacher %}
-            <div class="container mx-auto p-10">
+            <div class="container mx-auto p-10 md:w-1/2 sm:w-full">
                 <!-- Collapse component -->
                 <details class="bg-gray-300 open:bg-amber-200 duration-300">
                   <summary class="bg-inherit px-5 py-3 text-lg cursor-pointer">Add New Content</summary>

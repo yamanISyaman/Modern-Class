@@ -201,11 +201,11 @@ function showContent(class_id, page=1) {
 function createCard(name, type, url) {
     // Create a div element for the card container
     let card = document.createElement("div");
-    card.className = "mt-4 bg-white mx-auto max-w-sm shadow-lg rounded-lg overflow-hidden";
+    card.className = "mt-4 mb-4 bg-white mx-auto max-w-sm shadow-lg rounded-lg overflow-hidden";
   
     // Create a div element for the card content
     let content = document.createElement("div");
-    content.className = "sm:flex sm:items-center px-6 py-4";
+    content.className = "border border-black sm:flex sm:items-center px-6 py-4";
   
     // Create a div element for the card text
     let text = document.createElement("div");
@@ -247,3 +247,24 @@ function createCard(name, type, url) {
     // Return the card element
     return card;
   }
+
+
+
+// accept or reject a request
+function editRequest(class_id, student_id, type) {
+    const csrftoken = document.querySelector('#csrf').firstElementChild.value;
+    fetch('editrequest', {
+        method: 'POST',
+        headers: {'X-CSRFToken': csrftoken},
+        mode: 'same-origin', // Do not send CSRF token to another domain.
+        body: JSON.stringify({
+            student_id: student_id,
+            class_id: class_id,
+            type: type
+        })
+    })
+    .then(response => response.json())
+    .then(result => {
+        listStudents(class_id, type="r");
+    })
+}

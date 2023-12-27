@@ -42,6 +42,7 @@ function showClasses(filter, page=1) {
         // clean the container div
         document.querySelector('#classes-list').innerHTML = '';
         // initial value holders
+        
         let ccolor = 'green';
         let c = 'Available';
         let vcolor = 'blue';
@@ -51,11 +52,17 @@ function showClasses(filter, page=1) {
             if (r.private) {
                 v = 'Private';
                 vcolor = 'gray'
-            } else {}
+            } else {
+                v = 'Public';
+                vcolor = 'blue'
+            }
             if (r.closed) {
                 c = 'Closed';
                 ccolor = 'red'
-            } else {}
+            } else {
+                ccolor = 'green';
+                c = 'Available';
+            }
             let image = r.image;
             document.querySelector('#classes-list').innerHTML += `
             <a href="class/${r.title}+${r.id}">
