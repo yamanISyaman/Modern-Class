@@ -88,7 +88,7 @@ function showClasses(filter, page=1) {
         })
         
         // add paginator buttons
-        if (page > 1) {
+        if (result.num_pages > 1) {
             let pg = `
                 <div class="flex justify-center mt-2">
                     <ul class="flex items-center">`;
