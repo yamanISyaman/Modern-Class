@@ -160,12 +160,11 @@ def create_view(request):
         data = request.POST
 
         kargs = {
-            'private': True,
             'title': data.get('title'),
             'category': data.get('category'),
             'details': data.get('details'),
             'teacher': request.user,
-            'private': False if data.get('visibility') == "public" else False,
+            'private': False if data.get('visibility') == "public" else True,
         }
 
         image = data.get('image')
