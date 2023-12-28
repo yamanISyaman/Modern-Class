@@ -25,15 +25,9 @@ SECRET_KEY = 'django-insecure-ta-33k4+sp8z3h)t$drtn9aw%(v6yy_!6e*^tc9_z-%n#g9@bq
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    'capstone--justatestcode.repl.co',
-    '8000-sarcasticadmi-emptyrepo-rren46zm2gl.ws-us107.gitpod.io'
-]
+ALLOWED_HOSTS = []
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://capstone--justatestcode.repl.co',
-    'https://8000-sarcasticadmi-emptyrepo-rren46zm2gl.ws-us107.gitpod.io'
-]
+CSRF_TRUSTED_ORIGINS = []
 
 # Application definition
 
@@ -60,7 +54,7 @@ MIDDLEWARE = [
 ]
 
 # IPs for DjDT
-INTERNAL_IPS = ["127.0.0.1"]
+INTERNAL_IPS = [] 
 
 ROOT_URLCONF = 'mschool.urls'
 

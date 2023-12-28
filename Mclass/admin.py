@@ -1,12 +1,8 @@
 from django.contrib import admin
-from .models import Classroom, User
+from .models import Classroom, User, Content
 
 # Register your models here.
-class CustomUserAdmin(admin.ModelAdmin):
-    pass
 
-class CustomClassroom(admin.ModelAdmin):
-    pass
-
-admin.site.register(User, CustomUserAdmin)
-admin.site.register(Classroom, CustomClassroom)
+admin.site.register(User, admin.ModelAdmin)
+admin.site.register(Classroom, admin.ModelAdmin)
+admin.site.register(Content, admin.ModelAdmin)
