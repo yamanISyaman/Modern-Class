@@ -74,8 +74,8 @@ function showClasses(filter, page=1) {
                         </div>
                         <p class="max-w-md text-gray-700">${r.details}</p>
                         <div class="mt-4 flex items-center justify-between">
-                            <span class="text-sm font-semibold text-gray-600">Instructor: ${r.teacher}</span>
-                            <span class="text-sm font-semibold text-gray-600">Category: ${r.category}</span>
+                            <span class="mr-4 text-sm font-semibold text-gray-600">Instructor: ${r.teacher}</span>
+                            <span class="mr-4 text-sm font-semibold text-gray-600">Category: ${r.category}</span>
                             <div class="flex">
                                 <span class="mr-2 px-2 py-1 border border-${ccolor}-500 bg-${ccolor}-100 text-xs font-bold text-${ccolor}-500 rounded-full">${c}</span>
                                 <span class="mr-2 px-2 py-1 border border-${vcolor}-500 bg-${vcolor}-100 text-xs font-bold text-${vcolor}-500 rounded-full">${v}</span>
