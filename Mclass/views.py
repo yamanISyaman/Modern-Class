@@ -166,16 +166,15 @@ def create_view(request):
             'teacher': request.user,
             'private': False if data.get('visibility') == "public" else True,
         }
+        
+        image = request.FILES.get('image')
+        if not image_is_valid(image):
+            return render(request, "Mclass/create.html", {
+                "message": "Invalid Image",
+                "options": get_options()
+            })
 
-        image = data.get('image')
-        if image != '':
-            if not image_is_valid(image):
-                return render(request, "Mclass/create.html", {
-                    "message": "Invalid Image URL",
-                    "options": get_options()
-                })
-
-            kargs['image'] = image
+        kargs['image'] = image
 
         classroom = Classroom(**kargs)
         classroom.save()

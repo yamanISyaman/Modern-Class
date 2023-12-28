@@ -1,15 +1,12 @@
-import requests
+from PIL import Image
 
 # checking if image url is valid
-def image_is_valid(image_url):
-    image_formats = ("image/png", "image/jpeg", "image/jpg")
+def image_is_valid(image_file):
     try:
-        r = requests.head(image_url)
+        img = Image.open(image_file)
     except:
         return False
-    if r.headers["content-type"] in image_formats:
-        return True
-    return False
+    return True
 
 
 def get_options():

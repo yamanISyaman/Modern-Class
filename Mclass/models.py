@@ -17,7 +17,7 @@ class Classroom(models.Model):
     title = models.CharField(max_length=100)
     details = models.CharField(max_length=400)
     date = models.DateTimeField(auto_now_add=True)
-    image = models.URLField(blank=True, null=True, default='https://img.freepik.com/free-vector/hand-drawn-flat-design-stack-books-illustration_23-2149341898.jpg')
+    image = models.ImageField(upload_to='images/')
     private = models.BooleanField(default=False)
     category = models.CharField(max_length=30)
     closed = models.BooleanField(default=False)
@@ -33,7 +33,7 @@ class Classroom(models.Model):
             "id": self.id,
             "teacher": self.teacher.full_name,
             "title": self.title,
-            "image": self.image,
+            "image": self.image.url,
             "date": self.date.strftime("%b %d %Y, %I:%M %p"),
             "category": self.category,
             "details": self.details,

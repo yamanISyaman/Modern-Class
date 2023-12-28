@@ -25,20 +25,15 @@ SECRET_KEY = 'django-insecure-ta-33k4+sp8z3h)t$drtn9aw%(v6yy_!6e*^tc9_z-%n#g9@bq
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    'capstone--justatestcode.repl.co',
-    '8000-sarcasticadmi-emptyrepo-rren46zm2gl.ws-us107.gitpod.io'
-]
+ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://capstone--justatestcode.repl.co',
-    'https://8000-sarcasticadmi-emptyrepo-rren46zm2gl.ws-us107.gitpod.io'
-]
+CSRF_TRUSTED_ORIGINS = []
 
 # Application definition
 
 INSTALLED_APPS = [
     'Mclass',
+    'django_cleanup.apps.CleanupConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -132,6 +127,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_ROOT = BASE_DIR/'Mclass/media'
+MEDIA_URL = '/media/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
