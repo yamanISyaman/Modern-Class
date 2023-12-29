@@ -3,11 +3,12 @@ from django.db import models
 
 # Create your models here.
 
+
 # User Model
 class User(AbstractUser):
     full_name = models.CharField(max_length=50)
     is_teacher = models.BooleanField(default=False)
-    
+
     def __str__(self):
         return self.username
 
@@ -17,7 +18,7 @@ class Classroom(models.Model):
     title = models.CharField(max_length=100)
     details = models.CharField(max_length=400)
     date = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to='images/')
+    image = models.ImageField(upload_to="images/")
     private = models.BooleanField(default=False)
     category = models.CharField(max_length=30)
     closed = models.BooleanField(default=False)
@@ -27,7 +28,7 @@ class Classroom(models.Model):
 
     def __str__(self):
         return self.title
-    
+
     def serialize(self):
         return {
             "id": self.id,
@@ -46,11 +47,12 @@ class Classroom(models.Model):
 
 # Class Content Model
 class Content(models.Model):
-
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=20)
     url = models.URLField()
-    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, related_name="content")
+    classroom = models.ForeignKey(
+        Classroom, on_delete=models.CASCADE, related_name="content"
+    )
 
     def __str__(self):
         return self.name
@@ -61,5 +63,5 @@ class Content(models.Model):
             "name": self.name,
             "type": self.type,
             "url": self.url,
-            "classroom": self.classroom.id
+            "classroom": self.classroom.id,
         }

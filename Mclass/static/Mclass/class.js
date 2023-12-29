@@ -165,13 +165,13 @@ function showContent(class_id, page=1) {
         })
         
         // add paginator buttons
-        if (page > 1) {
+        if (result.num_pages > 1) {
             let pg = `
                 <div class="flex justify-center mt-2">
                     <ul class="flex items-center">`;
             if (result.has_previous) {
                 pg += `<li>
-                        <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-l shadow-lg transform transition duration-300 ease-in-out hover:scale-105" onclick="showClasses('${filter}', ${page - 1})">
+                        <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-l shadow-lg transform transition duration-300 ease-in-out hover:scale-105" onclick="showContent(${class_id}, ${page - 1})">
                             Prev
                         </button>
                     </li>`;
@@ -183,7 +183,7 @@ function showContent(class_id, page=1) {
                     </li>`;
             if (result.has_next) {
                 pg += `<li>
-                        <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r shadow-lg transform transition duration-300 ease-in-out hover:scale-105" onclick="showClasses('${filter}', ${page + 1})">
+                        <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r shadow-lg transform transition duration-300 ease-in-out hover:scale-105" onclick="showContent(${class_id}, ${page + 1})">
                             Next
                         </button>
                     </li>`;

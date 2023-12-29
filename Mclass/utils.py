@@ -1,5 +1,6 @@
 from PIL import Image
 
+
 # checking if image url is valid
 def image_is_valid(image_file):
     try:
@@ -10,4 +11,16 @@ def image_is_valid(image_file):
 
 
 def get_options():
-    return ["Chemistry", "Biology", "Physics", "Computer Science", "Art", "History", "Literature", "Languages", "Music", "Geography", "Other"]
+    return [
+        "Chemistry",
+        "Biology",
+        "Physics",
+        "Computer Science",
+        "Art",
+        "History",
+        "Literature",
+        "Languages",
+        "Music",
+        "Geography",
+        "Other",
+    ]

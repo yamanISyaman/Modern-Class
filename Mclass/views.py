@@ -28,24 +28,31 @@ def register_view(request):
         password = request.POST["password"]
         confirmation = request.POST["confirm-password"]
         if password != confirmation:
-            return render(request, "Mclass/register.html",
-                          {"message": "Passwords must match."})
+            return render(
+                request, "Mclass/register.html", {"message": "Passwords must match."}
+            )
 
         # make sure that fields are not left empty
         if not password or not confirmation or not email or not full_name:
-            return render(request, "Mclass/register.html",
-                          {"message": "All Fields Are Required."})
+            return render(
+                request, "Mclass/register.html", {"message": "All Fields Are Required."}
+            )
 
         # Attempt to create new user
         try:
-            user = User.objects.create_user(email.lower(),
-                                            password=password,
-                                            full_name=full_name,
-                                            is_teacher=is_teacher)
+            user = User.objects.create_user(
+                email.lower(),
+                password=password,
+                full_name=full_name,
+                is_teacher=is_teacher,
+            )
             user.save()
         except IntegrityError:
-            return render(request, "Mclass/register.html",
-                          {"message": "Email Already Has an Account"})
+            return render(
+                request,
+                "Mclass/register.html",
+                {"message": "Email Already Has an Account"},
+            )
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
     else:
@@ -56,7 +63,6 @@ def login_view(request):
     if request.user.is_authenticated:
         return error_404(request)
     if request.method == "POST":
-
         # Attempt to sign user in
         email = request.POST["email"]
         password = request.POST["password"]
@@ -67,8 +73,11 @@ def login_view(request):
             login(request, user)
             return HttpResponseRedirect(reverse("index"))
         else:
-            return render(request, "Mclass/login.html",
-                          {"message": "Invalid email and/or password."})
+            return render(
+                request,
+                "Mclass/login.html",
+                {"message": "Invalid email and/or password."},
+            )
     else:
         return render(request, "Mclass/login.html")
 
@@ -102,23 +111,23 @@ def index(request):
         # show classes as the filter was set
         elif filter == "filter":
             kargs = dict()
-            if data["category"] != '':
-
+            if data["category"] != "":
                 kargs["category"] = data["category"]
-            if data["type"] != '':
+            if data["type"] != "":
                 kargs["private"] = True if data["type"] == "private" else False
-            if data["availability"] != '':
-                kargs["closed"] = True if data[
-                    "availability"] == "closed" else False
+            if data["availability"] != "":
+                kargs["closed"] = True if data["availability"] == "closed" else False
 
             classes = Classroom.objects.filter(**kargs)
 
         # show classes that contain the search keyword in their title or the details or teacher name
         elif filter == "search":
             sw = data["search_word"]
-            classes = Classroom.objects.filter(title__contains=sw) | (
-                Classroom.objects.filter(details__contains=sw)) | (
-                    Classroom.objects.filter(teacher__full_name__contains=sw))
+            classes = (
+                Classroom.objects.filter(title__contains=sw)
+                | (Classroom.objects.filter(details__contains=sw))
+                | (Classroom.objects.filter(teacher__full_name__contains=sw))
+            )
 
         else:
             return error_404()
@@ -127,9 +136,7 @@ def index(request):
         classes_list = [c.serialize() for c in classes]
 
         # sort depending on ids
-        sorted_classes = sorted(classes_list,
-                                key=lambda _: _['id'],
-                                reverse=True)
+        sorted_classes = sorted(classes_list, key=lambda _: _["id"], reverse=True)
 
         # make a paginator
         pg = Paginator(sorted_classes, 10)
@@ -138,7 +145,7 @@ def index(request):
         except EmptyPage:
             return error_404(request)
 
-        #return a json response
+        # return a json response
         return JsonResponse(
             {
                 "has_next": p.has_next(),
@@ -146,8 +153,9 @@ def index(request):
                 "num_pages": pg.num_pages,
                 "classes": p.object_list,
             },
-            status=201)
-    return render(request, 'Mclass/index.html')
+            status=201,
+        )
+    return render(request, "Mclass/index.html")
 
 
 # create a new class
@@ -160,27 +168,29 @@ def create_view(request):
         data = request.POST
 
         kargs = {
-            'title': data.get('title'),
-            'category': data.get('category'),
-            'details': data.get('details'),
-            'teacher': request.user,
-            'private': False if data.get('visibility') == "public" else True,
+            "title": data.get("title"),
+            "category": data.get("category"),
+            "details": data.get("details"),
+            "teacher": request.user,
+            "private": False if data.get("visibility") == "public" else True,
         }
-        
-        image = request.FILES.get('image')
-        if not image_is_valid(image):
-            return render(request, "Mclass/create.html", {
-                "message": "Invalid Image",
-                "options": get_options()
-            })
 
-        kargs['image'] = image
+        image = request.FILES.get("image")
+        if not image_is_valid(image):
+            return render(
+                request,
+                "Mclass/create.html",
+                {"message": "Invalid Image", "options": get_options()},
+            )
+
+        kargs["image"] = image
 
         classroom = Classroom(**kargs)
         classroom.save()
         return HttpResponseRedirect(reverse("index"))
 
     return render(request, "Mclass/create.html", {"options": get_options()})
+
 
 # create a new class
 def class_settings(request, id):
@@ -190,17 +200,17 @@ def class_settings(request, id):
 
     data = request.POST
     class_object = Classroom.objects.filter(id=id)
-    print(data.get('category'))
+    print(data.get("category"))
 
     kargs = {
-        'private': True if data.get('visibility') == 'private' else False,
-        'category': data.get('category'),
-        'closed': True if data.get('availability') == "closed" else False,
+        "private": True if data.get("visibility") == "private" else False,
+        "category": data.get("category"),
+        "closed": True if data.get("availability") == "closed" else False,
     }
 
     class_object.update(**kargs)
     request.method = "GET"
-    return redirect('class_view', class_id=id, title=class_object.first().title)
+    return redirect("class_view", class_id=id, title=class_object.first().title)
 
 
 # the class view
@@ -223,11 +233,14 @@ def class_view(request, class_id, title=""):
         else:
             return error_404(request)
     return render(
-        request, "Mclass/class.html", {
+        request,
+        "Mclass/class.html",
+        {
             "data": class_object.serialize(),
             "teacher": class_object.teacher,
-            "options": get_options()
-        })
+            "options": get_options(),
+        },
+    )
 
 
 # removing a student from a class
@@ -262,11 +275,8 @@ def list_students(request, type):
             items = classroom.request.all()
 
         return JsonResponse(
-            {"students": [{
-                "name": s.full_name,
-                "id": s.id
-            } for s in items]},
-            status=201)
+            {"students": [{"name": s.full_name, "id": s.id} for s in items]}, status=201
+        )
     return error_404(request)
 
 
@@ -276,8 +286,7 @@ def edit_request(request):
         data = json.loads(request.body)
         student = User.objects.get(id=data["student_id"])
         classroom = Classroom.objects.get(id=data["class_id"])
-        if request.user != classroom.teacher or student not in classroom.request.all(
-        ):
+        if request.user != classroom.teacher or student not in classroom.request.all():
             return error_404(request)
         if data["type"] == "accept":
             classroom.student.add(student)
@@ -304,21 +313,22 @@ def add_content(request, id):
     # Get the classroom object by id
     classroom = Classroom.objects.get(id=id)
 
-    if request.method == 'POST':
+    if request.method == "POST":
         if request.user.is_teacher:
             # Get the form data from the request
-            name = request.POST.get('cn')
-            type = request.POST.get('ct')
-            url = request.POST.get('cu')
+            name = request.POST.get("cn")
+            type = request.POST.get("ct")
+            url = request.POST.get("cu")
 
             # Create a new content object with the form data and the classroom
             content = Content(name=name, type=type, url=url, classroom=classroom)
             # Save the content object to the database
             content.save()
 
-            # Redirect the user to the index view
-            return redirect('index')
-
+            # Redirect the user to the class view
+            request.method = "GET"
+            
+            return redirect("class_view", class_id=id, title=classroom.title)
     # If the request method is not POST return 404
     else:
         return error_404(request)
@@ -338,9 +348,7 @@ def show_content(request):
         content_list = [c.serialize() for c in content]
 
         # sort depending on ids
-        sorted_content = sorted(content_list,
-            key=lambda _: _['id'],
-            reverse=True)
+        sorted_content = sorted(content_list, key=lambda _: _["id"], reverse=True)
 
         # make a paginator
         pg = Paginator(sorted_content, 10)
@@ -349,7 +357,7 @@ def show_content(request):
         except EmptyPage:
             return error_404(request)
 
-        #return a json response
+        # return a json response
         return JsonResponse(
             {
                 "has_next": p.has_next(),
@@ -357,5 +365,6 @@ def show_content(request):
                 "num_pages": pg.num_pages,
                 "content": p.object_list,
             },
-            status=201)
+            status=201,
+        )
     return error_404(request)
