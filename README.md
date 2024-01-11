@@ -1,47 +1,62 @@
 # Modern Class
 
-A Live Demo: [Modern CLASS DEMO](https://modernclass.pythonanywhere.com)
+A live demo of the project can be found here: [Modern CLASS DEMO](https://modernclass.pythonanywhere.com)
 
-The modern class is a my CS50W's Final Project an it's a web app belongs to a bigger project called Modern School and the Modern Class's purpose is to spread knowledge by easing the connection between students and teachers.
+The Modern Class is my final project for CS50W. It is a web application that is part of a larger project known as Modern School. The primary aim of Modern Class is to facilitate knowledge sharing by simplifying the connection between students and teachers.
 
-it was built with django, javascript, CSS, TailwindCSS, HTML and Sqlite3.
+The application was built using Django, JavaScript, CSS, TailwindCSS, HTML, and SQLite3.
 
-# Distinctiveness and Complexity
-Modern Class as an idea is obviously distinctive from the CS50W course projects and as a code it uses the TailwindCSS framework (not Bootstrap) and it's mobile responsive and the code generally is more complex in terms of linking the models in the database and the challenging views and javascript functions that were written.
+## Distinctiveness and Complexity
 
-# Structure
-## Files
-- **layout.html**: the main structure.
-- **register.html**: it has the register form.
-- **login.html**: the page for login a pre registered user.
-- **index.html**: the main page of website it lists all the courses for all users with some differences for authenticated users and between teachers and students as well.
-- **class.html**: is the Class Page and it's of course different for each class and for different types of users.
-- **create.html**: this page is only available for teachers and it has a form creating a new class.
-- **error.htnl**: a well designed 404 error page.
-- **index.js**: has all the javascript functionality that *index.html* needs.
-- **class.js**: has all the javascript functionality that *class.html* needs.
-- **styles.css**: has all the custom css needed for the app.
-## Models
-- **User**: extends the AbstractUser Class and add a full_name (CHAR) and is_teacher (boolean) fields.
-- **Classroom**: it represents the classroom or class for short (but it's a reserved word in python).
-- **Content**: represents the class content.
+The Modern Class project differs from other CS50W course projects due to its unique concept and distinctive execution. The code uses the TailwindCSS framework instead of Bootstrap to make it mobile responsive and give it an aesthetic taste different from other previous projects. Additionally, the code is more complex due to the intricate model linking in the database and the challenging views and JavaScript functions that were written.
 
-# Installations and Usage
-first run the following command to install all requirements:
+One key feature of this project is the use of the Django Debug Toolbar, a powerful tool for developing Django project and Troubleshooting hidden or abvious bugs. This tool was not covered in any previous problem sets of the course and its use demonstrates the application's complexity and the new skills that were acquired.
 
-`pip install -r requirements.txt`
+Another distinguishing factor is the use of the image fields in the database. This feature allows the storage and retrieval of images directly within the database, adding another layer of complexity to the application. And as well this feature wasn't covered in any previous problem sets which highlights the distinctiveness of this project.
 
-and then go to the directory of the `manage.py` file and run:
 
-`python manage.py migrate` to build your database
+## File Structure
 
-and then run `python manage.py createsuperuser` to create and admin user for you and finally run `python manage.py runserver` to start the app.
+### Files
+
+#### Frontend
+- **layout.html**: This is the main structure of the application.
+- **register.html**: This file contains the registration form.
+- **login.html**: This page is used for logging in a pre-registered user.
+- **index.html**: This is the main page of the website, listing all the courses for all users. The display varies for authenticated users and between teachers and students.
+- **class.html**: This is the Class Page, which differs for each class and for different types of users.
+- **create.html**: This page is accessible only to teachers and contains a form for creating a new class.
+- **error.html**: This is a well-designed 404 error page.
+- **index.js**: This file contains all the JavaScript functionality required by *index.html*.
+- **class.js**: This file contains all the JavaScript functionality required by *class.html*.
+- **styles.css**: This file contains all the custom CSS required for the app.
+
+#### Backend
+- **views.py**: This file contains all the view functions that process incoming requests and return the appropriate responses.
+- **utils.py**: This file contains helper functions such as the image validation function.
+- **urls.py**: This file routes different URL calls to the corresponding view functions.
+- **admin.py**: This file configures the administrative interface for the app.
+- **models.py**: This file defines the data structures used in the app, including User, Classroom, and Content models.
+- **settings.py**: This file contains settings for the Django application, including configuration for allowed hosts, CSRF trusted origins, and debug mode.
+
+### Models
+- **User**: This model extends the AbstractUser Class and adds a full_name (CHAR) and is_teacher (boolean) field.
+- **Classroom**: This model represents the classroom.
+- **Content**: This model represents the class content.
+
+## Installation and Usage
+
+- First run the following command to install all requirements: `pip install -r requirements.txt`
+
+- And then go to the directory of the `manage.py` file and run: `python manage.py migrate` to build your database
+
+- And then run `python manage.py createsuperuser` to create and admin user for you and finally run `python manage.py runserver` to start the app.
 
 **NOTES**:
-- you'll encounter the `DisallowedHost` Error and to solve it add the the header it tells you about to `ALLOWED_HOSTS` list in `mschool/settings.py`
+- You'll encounter the `DisallowedHost` Error and to solve it add the the header it tells you about to `ALLOWED_HOSTS` list in `mschool/settings.py`
 
-- if you encountered a CSRF trust error then add your whole domain link (including https/http) to the `CSRF_TRUSTED_ORIGINS` list in the `mschool/settings.py` file.
+- If you encountered a CSRF trust error then add your whole domain link (including https/http) to the `CSRF_TRUSTED_ORIGINS` list in the `mschool/settings.py` file.
 
-- if you would like to use the Django-Debug-Toolbar utility then make sure that the `DEBUG` variable is set to True in your `mschool/settings.py` file and add your localhost/server ip to the `INTERNAL_IPS` list in that same file.
+- If you would like to use the Django-Debug-Toolbar utility then make sure that the `DEBUG` variable is set to True in your `mschool/settings.py` file and add your localhost/server ip to the `INTERNAL_IPS` list in that same file.
 
 <hr>
